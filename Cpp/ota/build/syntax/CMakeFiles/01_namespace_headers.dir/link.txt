@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/01_namespace_headers.dir/01_namespace_headers.cpp.o -o ../01_namespace_headers 

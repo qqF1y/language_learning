@@ -1,0 +1,35 @@
+# =============================================================================
+# ota_mini 配置文件
+# 对应真实工程的 configures/a2409.yaml（结构一样，字段简化了）
+# =============================================================================
+
+# ---- 基本配置 ----
+thread_pool_size: 4          # 并行升级设备的线程数，真实工程是 30
+battery_limit: 30            # 电量低于该值拒绝升级
+reboot_after_ota: false      # true = 软重启（会真的执行 reboot，演示里跳过）
+hard_reboot: false           # true = 硬重启（转 PUB_HARD_REBOOT，等外部下电）
+prepare_befor_ota: false     # true = 检查机器人是否已挂起
+prepare_befor_ota_time: 3    # 挂起检查重试次数
+
+work_dir: "/tmp/ota_mini/work"   # 状态文件 / 下载目录 / 版本文件都放这里
+
+# ---- 升级顺序（对应真实工程的 upgrade_sequence）----
+# 注意：rk_serial 在升级包里没有对应目录，会演示"跳过缺失模块"
+upgrade_sequence:
+  - nx_serial
+  - rk_serial
+  - rk_ethercat
+  - rk_self
+  - nx_self
+
+# ---- 串口设备（对应 nx_serial.devices）----
+device_ports:
+  - /dev/ttyTHS1
+  - /dev/ttyUSB0
+  - /dev/ttyUSB1
+  - /dev/ttyUSB9
+
+# ---- 想让升级失败时，把设备下标填进来，例如：----
+# device_fail_ids:
+#   - 2
+device_fail_ids:

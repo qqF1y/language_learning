@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/10_filesystem_and_posix_io.dir/10_filesystem_and_posix_io.cpp.o -o ../10_filesystem_and_posix_io 

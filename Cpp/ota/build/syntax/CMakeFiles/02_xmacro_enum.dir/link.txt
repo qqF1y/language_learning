@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/02_xmacro_enum.dir/02_xmacro_enum.cpp.o -o ../02_xmacro_enum 

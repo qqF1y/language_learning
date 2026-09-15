@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/16_modern_cpp_misc.dir/16_modern_cpp_misc.cpp.o -o ../16_modern_cpp_misc 

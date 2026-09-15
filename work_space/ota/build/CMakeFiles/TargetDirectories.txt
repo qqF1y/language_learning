@@ -1,0 +1,6 @@
+/home/qiurangfei/PRJ/language_learning/work_space/ota/build/CMakeFiles/edit_cache.dir
+/home/qiurangfei/PRJ/language_learning/work_space/ota/build/CMakeFiles/rebuild_cache.dir
+/home/qiurangfei/PRJ/language_learning/work_space/ota/build/syntax/CMakeFiles/01_.dir
+/home/qiurangfei/PRJ/language_learning/work_space/ota/build/syntax/CMakeFiles/run_all_syntax.dir
+/home/qiurangfei/PRJ/language_learning/work_space/ota/build/syntax/CMakeFiles/edit_cache.dir
+/home/qiurangfei/PRJ/language_learning/work_space/ota/build/syntax/CMakeFiles/rebuild_cache.dir

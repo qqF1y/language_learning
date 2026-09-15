@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/ota_mini.dir/src/main.cpp.o CMakeFiles/ota_mini.dir/src/config.cpp.o CMakeFiles/ota_mini.dir/src/fs_utils.cpp.o CMakeFiles/ota_mini.dir/src/ota_node.cpp.o CMakeFiles/ota_mini.dir/src/shell_command.cpp.o CMakeFiles/ota_mini.dir/src/state_machine.cpp.o CMakeFiles/ota_mini.dir/src/states.cpp.o -o ../../ota_mini 

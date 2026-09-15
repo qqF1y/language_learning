@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+f5de4a8ef4aecd70669e278d5f345252 examples/ota_mini/CMakeFiles/run_demo
+7d2e607fc1c2d1704d18453693f7ec07 syntax/CMakeFiles/run_all_syntax

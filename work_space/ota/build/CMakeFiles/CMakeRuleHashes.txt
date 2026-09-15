@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+a3ae0c505ef78f7c6ed83b2be9902024 syntax/CMakeFiles/run_all_syntax

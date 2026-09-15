@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/06_thread_atomic_waiter.dir/06_thread_atomic_waiter.cpp.o -o ../06_thread_atomic_waiter 
