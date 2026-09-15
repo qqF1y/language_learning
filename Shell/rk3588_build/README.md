@@ -16,8 +16,8 @@
 | `07_mount_umount.sh` | `mount` `umount` | 挂载/卸载 rootfs.img |
 | `08_e2fsck_resize2fs.sh` | `e2fsck` `resize2fs` | 检查、调整 ext4 镜像大小（resize.sh） |
 | `09_mkfs_ext4.sh` | `mkfs.ext4` | 格式化 userdata 为 ext4 |
-| `10_chroot.sh` | `chroot` | 切换根目录执行安装脚本（rootfs-install.sh） |
-| `11_qemu_static.sh` | `qemu-aarch64-static` | x86 主机上运行 ARM 二进制 |
+| `10_chroot.sh` | `chroot` | 真实 mount + chroot 进入 ARM rootfs（需 root） |
+| `11_qemu_static.sh` | `qemu-aarch64-static` | 真实执行 ARM 二进制（debugfs 提取，无需 root） |
 | `12_ps_grep_kill.sh` | `ps` `grep` `awk` `kill` | 清理残留 qemu 进程（kill_qemu.sh） |
 | `13_rootfs_install_flow.sh` | 全部汇总 | dry-run 完整还原 build_rootfs 流程 |
 
