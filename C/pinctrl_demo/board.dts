@@ -1,0 +1,70 @@
+/*
+ * board.dts —— 板子长什么样, 全写在这里, 而不是写死在驱动里
+ *
+ * 真实系统: dtc 把 .dts 编成 .dtb, bootloader 交给内核, 内核解析成
+ *           "一棵属性树"(of_* API), 驱动再用 of_property_read_* 去读。
+ * 这个 demo: 自己用一个几十行的解析器直接读 .dts —— 内核看到的东西是一样的。
+ *
+ * 注意 dts 里**没有一行代码**, 全是"数据"。换块板子只改这个文件,
+ * 驱动一行都不用动 —— 这就是设备树存在的理由。
+ */
+/dts-v1/;
+
+/ {
+	model = "Demo Board";
+	compatible = "demo,board";
+
+	/* ============ 引脚控制器: 有哪几组脚、每组配什么 ============ */
+	pinctrl: pinctrl@40002000 {
+		compatible = "demo,pinctrl";
+		reg = <0x40002000 0x1000>;
+
+		/* 每个子节点 = 一组脚(group)。
+		 *   function      → 这组脚干什么用(对应 chip 手册里的复用选择编号)
+		 *   pins          → 哪几个物理脚
+		 *   剩下的属性     → pinconf(电气参数), 名字就是内核的通用参数名 */
+		uart_pins: uart-pins {
+			function = "uart";
+			pins = "PA0", "PA1";
+			drive-strength = <8>;		/* 8mA */
+			output-enable;
+		};
+
+		i2c_pins: i2c-pins {
+			function = "i2c";
+			pins = "PA2", "PA3";
+			bias-pull-up;			/* I2C 的脚必须上拉 */
+		};
+
+		uart_sleep_pins: uart-sleep-pins {
+			function = "gpio";		/* 休眠: 把脚放回 gpio */
+			pins = "PA0", "PA1";
+			bias-disable;
+		};
+	};
+
+	/* ============ 消费者①: 串口 ============ */
+	uart0: serial@40003000 {
+		compatible = "demo,uart";
+		reg = <0x40003000 0x100>;
+
+		/* pinctrl-names 和 pinctrl-N 是一对:
+		 *   第 0 个名字(这里是 "default") 对应 pinctrl-0
+		 *   第 1 个名字("sleep") 对应 pinctrl-1
+		 * 驱动里 pinctrl_lookup_state(dev, "sleep") 查的就是这张对照表。 */
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&uart_pins>;
+		pinctrl-1 = <&uart_sleep_pins>;
+
+		status = "okay";
+	};
+
+	/* ============ 消费者②: I2C ============ */
+	i2c1: i2c@40004000 {
+		compatible = "demo,i2c";
+		reg = <0x40004000 0x100>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&i2c_pins>;
+		status = "okay";
+	};
+};

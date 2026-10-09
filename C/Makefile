@@ -1,50 +1,44 @@
-# C 语言经典例程 Makefile
+# C 目录总入口：基础例程 + 启动 demo + 专题 demo
 #
-#   make                 编译全部例程到 build/
-#   make run             编译并依次运行全部例程
-#   make one FILE=05_pointers_basics
-#                        只编译并运行某一个例程
-#   make SAN=1 run       带 AddressSanitizer/UBSan 运行(用来抓内存错误)
-#   make clean           清理
+#   make             全部编译
+#   make run         跑 soc_boot 启动 demo（推荐先看这个）
+#   make run-basics  依次跑 18 个基础例程
+#   make run-pinctrl 跑 pinctrl 原理 demo（纯用户态）
+#   make clean
 
-CC      := gcc
-CFLAGS  := -std=c11 -Wall -Wextra -Wpedantic -g -O0
-BUILD   := build
+all: basics soc pinctrl
 
-# 单文件例程(形如 01_xxx.c ... 17_xxx.c)
-SINGLE  := $(wildcard [0-9][0-9]_*.c)
-BINS    := $(patsubst %.c,$(BUILD)/%,$(SINGLE))
+basics:
+	$(MAKE) -C basics
 
-# 多文件编译例程
-MULTI_DIR   := 18_multi_file
-MULTI_BIN   := $(BUILD)/18_multi_file
-MULTI_SRCS  := $(MULTI_DIR)/main.c $(MULTI_DIR)/stats.c
+soc:
+	$(MAKE) -C soc_boot
 
-ifdef SAN
-CFLAGS += -fsanitize=address,undefined
-endif
+pinctrl:
+	$(MAKE) -C pinctrl_demo
 
-all: $(BINS) $(MULTI_BIN)
+run:
+	$(MAKE) -C soc_boot run
 
-$(BUILD)/%: %.c
-	@mkdir -p $(BUILD)
-	$(CC) $(CFLAGS) $< -o $@
+run-basics:
+	$(MAKE) -C basics run
 
-$(MULTI_BIN): $(MULTI_SRCS) $(MULTI_DIR)/stats.h
-	@mkdir -p $(BUILD)
-	$(CC) $(CFLAGS) $(MULTI_SRCS) -o $@
+run-pinctrl:
+	$(MAKE) -C pinctrl_demo run
 
-run: all
-	@for b in $(BINS) $(MULTI_BIN); do \
-		echo "==================== $$b ===================="; \
-		./$$b < /dev/null || echo "(退出码 $$?)"; \
-		echo; \
-	done
+# 内核驱动章节（字符设备 / tty / pinctrl）目录存在时才编，免得 make 直接失败
+driver:
+	@if [ -d kernel_driver ]; then $(MAKE) -C kernel_driver; \
+	else echo "跳过 kernel_driver/（目录不在工作区）"; fi
 
-one: $(BUILD)/$(FILE)
-	@./$(BUILD)/$(FILE)
+run-driver:
+	@if [ -d kernel_driver ]; then $(MAKE) -C kernel_driver sim; \
+	else echo "跳过 kernel_driver/（目录不在工作区）"; fi
 
 clean:
-	rm -rf $(BUILD)
+	$(MAKE) -C basics clean
+	$(MAKE) -C soc_boot clean
+	$(MAKE) -C pinctrl_demo clean
+	@if [ -d kernel_driver ]; then $(MAKE) -C kernel_driver clean; fi
 
-.PHONY: all run one clean
+.PHONY: all basics soc pinctrl driver run run-basics run-pinctrl run-driver clean

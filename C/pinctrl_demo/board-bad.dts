@@ -1,0 +1,33 @@
+/*
+ * board-bad.dts —— 故意写错一处的设备树, 用来看"出错时长什么样"
+ *
+ * 错在哪: 下面 uart0 的 pinctrl-0 写成了 <&uart_pin>(少了个 s),
+ *         设备树里没有这个 label。
+ *
+ * 真实世界里这是最常见的翻车方式: 驱动、设备号、/dev 节点全都正常,
+ * 就是引脚没配上, 硬件一句都不动 —— 而 dmesg 里只有一行看不懂的报错。
+ */
+/dts-v1/;
+
+/ {
+	model = "Demo Board (broken)";
+	compatible = "demo,board";
+
+	pinctrl: pinctrl@40002000 {
+		compatible = "demo,pinctrl";
+		reg = <0x40002000 0x1000>;
+
+		uart_pins: uart-pins {
+			function = "uart";
+			pins = "PA0", "PA1";
+		};
+	};
+
+	uart0: serial@40003000 {
+		compatible = "demo,uart";
+		reg = <0x40003000 0x100>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&uart_pin>;	/* ← 少了 s: 没有这个 label */
+		status = "okay";
+	};
+};
